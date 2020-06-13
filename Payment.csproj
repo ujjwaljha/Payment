@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\icons\logo-amex.svg" />
+    <None Include="wwwroot\images\icons\logo-cash.svg" />
+    <None Include="wwwroot\images\icons\logo-mada.svg" />
+    <None Include="wwwroot\images\icons\logo-mastercard.svg" />
+    <None Include="wwwroot\images\icons\logo-paypal.svg" />
+    <None Include="wwwroot\images\icons\logo-visa.svg" />
+    <None Include="wwwroot\images\icons\streaming-live-tv-en.svg" />
+    <None Include="wwwroot\images\icons\tick.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />

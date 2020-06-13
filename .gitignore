@@ -1,0 +1,8 @@
+
+appsettings.json
+bin/Debug/netcoreapp2.1/Payment.dll
+bin/Debug/netcoreapp2.1/Payment.pdb
+bin/Debug/netcoreapp2.1/Payment.Views.dll
+*.pdb
+obj/Debug/netcoreapp2.1/Payment.csproj.CoreCompileInputs.cache
+*.dll

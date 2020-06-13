@@ -4,6 +4,7 @@ using Payment.Models;
 using Payment.Dto;
 using System.Collections.Generic;
 using Payment.Repositories;
+using System.Threading.Tasks;
 
 namespace Payment.Controllers
 {
@@ -22,9 +23,9 @@ namespace Payment.Controllers
             return View();
         }
 
-        public JsonResult GetJson(int packageId = 1, int countryId = 1)
+        public async Task<JsonResult> GetJson(int packageId = 1, int countryId = 1)
         {
-            return Json(paymentRepository.GetPayment());
+            return Json(await paymentRepository.GetPayment());
         }
 
         

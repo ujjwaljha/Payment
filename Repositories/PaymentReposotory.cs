@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Payment.Dto;
 using Payment.Models;
 
@@ -16,7 +17,7 @@ namespace Payment.Repositories
 
         public PaymentContext Context { get; }
 
-        public Dto.Payment GetPayment(int countryId = 1, int packageId = 1)
+        public async Task<Dto.Payment> GetPayment(int countryId = 1, int packageId = 1)
         {
             var paymentMethods = Context.PaymentMethod
                 .Where(m => m.IsActive == true && m.IsDeleted == false)
@@ -33,14 +34,14 @@ namespace Payment.Repositories
                 .Select(m => new { m.Id, m.Name, m.MonthNumber });
 
             // ToList as all set is require for the end result
-            var discountes = Context.Discount
+            var discountes = await Context.Discount
                 .Where(m => m.IsActive == true && m.IsDeleted == false && m.PackageId == packageId)
-                .Select(m => new { m.Id, m.FrequencyId, m.DiscountPercent }).ToList();
+                .Select(m => new { m.Id, m.FrequencyId, m.DiscountPercent }).ToListAsync();
 
             // ToList as all set is require for the end result
-            var installations = Context.Installation
+            var installations = await Context.Installation
                 .Where(m => m.IsActive == true && m.IsDeleted == false && m.PackageId == packageId)
-                .Sum(m => m.Price);
+                .SumAsync(m => m.Price);
 
 
             var hardwarePrice = (from hardware in Context.Hardware

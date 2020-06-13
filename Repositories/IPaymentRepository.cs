@@ -7,7 +7,6 @@ namespace Payment.Repositories
 {
     public interface IPaymentRepository
     {
-        Dto.Payment GetPayment(int countryId = 1, int packageId = 1);
-        //void GetPayment(int discountId);
+        Task<Dto.Payment> GetPayment(int countryId = 1, int packageId = 1);
     }
 }
