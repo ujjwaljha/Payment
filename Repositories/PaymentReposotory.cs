@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Payment.Dto;
 using Payment.Models;
+using Payment.ViewModel;
 
 namespace Payment.Repositories
 {
@@ -76,6 +77,33 @@ namespace Payment.Repositories
                 PackId = packageId.ToString(),
                 PackPrice = packPrice
             };
+        }
+
+        public async Task<List<LookUp>> GetPaymentMethod()
+        {
+            //return await Context.PaymentMethod
+            //    .Where(m => m.IsActive == true && m.IsDeleted == false)
+            //    .Select(m => new LookUp { Id = m.Id, Text = m.Name }).ToListAsync();
+
+            return await (from paymentMethod in Context.PaymentMethod
+                          where paymentMethod.IsActive && !paymentMethod.IsDeleted
+                          select new LookUp { Id = paymentMethod.Id, Text = paymentMethod.Name }).ToListAsync();
+
+        }
+
+        public async Task<List<FrequencyDiscountViewModel>> GetPaymentFrequencyWithDiscount( int packageId = 1)
+        {
+            return await (from frequency in Context.Frequency
+                          join discount in Context.Discount on frequency.Id equals discount.FrequencyId
+                        where frequency.IsActive && !frequency.IsDeleted && discount.IsActive && !discount.IsDeleted
+                        select new FrequencyDiscountViewModel { Id=  frequency.Id, MonthNumber = frequency.MonthNumber, Name= frequency.Name, DiscountPercent = discount.DiscountPercent }).ToListAsync();
+        }
+
+        public async Task<decimal> GetPackge(int packageId = 1)
+        {
+            return await Context.Package
+                .Where(m => m.IsActive == true && m.IsDeleted == false && m.Id == packageId)
+                .Select(m =>  m.Price ).FirstOrDefaultAsync();
         }
 
         private Price CalcualtePrice(decimal pack, byte discountPerc, decimal installaiton, decimal hardware)

@@ -1,7 +1,54 @@
-﻿@{
+﻿@model PaymentViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
+<br /><br />
+<div class="row">
+    <h1>Complete your payment</h1>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <br />
+        @*<div>Package price: @Model.Package</div>
+            <br />*@
+        <input type="hidden" value="@Model.Package" id="package" />
+        <div class="form-group">
+            <label for="PaymentType">Payment type</label>
+            @Html.DropDownListFor(m => m.PaymentType, Model.PaymentTypeOption.Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Text }), new  { @class = "form-control" })
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            <label>Plan</label> <br />
+            @foreach (var fd in Model.FrequencyDiscountOption)
+            {
+                <input type="radio" name="FrequencyDiscount" value="@fd.MonthNumber" data-month="@fd.MonthNumber" data-discount="@fd.DiscountPercent" id="@("FrequencyDiscount" + fd.Id)" />
+                <label for="@("FrequencyDiscount" + fd.Id)">@fd.Name : @fd.DiscountPercent% off</label>
+                <br />
+            }
+        </div>
+        <br />
+        <div id="calculate" style="display:none">Package: @Model.Package x Month: <span id="month"></span> - discount: <span id="discount"></span>% =  <span id="total"></span></div>
 
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(function () {
+            $('input:radio').change(function () {
+                $("#calculate").show();
 
+                $("#month").text($(this).data('month'))
+                $("#discount").text($(this).data('discount'))
+
+                var total = ($("#package").val() * $(this).data('month'));
+                total = total - (total * $(this).data('discount') / 100); 
+
+                $("#total").text(total);
+            });
+
+        });
+    </script>
+}
 
